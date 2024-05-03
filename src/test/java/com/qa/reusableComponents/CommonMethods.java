@@ -138,11 +138,15 @@ public class CommonMethods {
 	}
 
 	// check if element is Present
-	public boolean isElementPresent_custom(WebElement element, String fieldName) {
-		boolean flag = false;
+	public static boolean isElementPresent_custom(WebElement element) {
+		try {
+			element.isDisplayed();
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
 
-		flag = element.isDisplayed();
-		return flag;
 	}
 
 	// Select dropdown value value by visibleText

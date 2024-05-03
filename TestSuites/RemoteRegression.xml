@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite  thread-count="2" name="Para Bank Web Application ">
+
+	<groups>
+		<run>
+			<include name="Regression"></include>
+		</run>
+	</groups>
+
+	<listeners>
+		<listener class-name="com.qa.reports.ExtentListener" />
+	</listeners>
+
+	<test thread-count="2" parallel="tests" name="Register Functionality Validation">
+		<classes>
+			<class name="com.qa.tests.UserSignUpSuite" />
+		</classes>
+	</test>
+	<test thread-count="2" parallel="tests" name="Login Functionality Validation">
+		<classes>
+			<class name="com.qa.tests.LoginSuite" />
+		</classes>
+	</test>
+	<test thread-count="2" parallel="tests" name="Account Overview Functionality Validation">
+		<classes>
+			<class name="com.qa.tests.AccountOverviewSuite" />
+		</classes>
+	</test>
+	<test thread-count="2" parallel="tests" name="Open New Account Functionality Validation">
+		<classes>
+
+			<class name="com.qa.tests.OpenNewAccountSuite" />
+
+		</classes>
+	</test>
+	<test thread-count="2" parallel="tests" name="Transfer Fund Functionality Validation">
+		<classes>
+			<class name="com.qa.tests.TransferFundsSuite" />
+
+		</classes>
+	</test>
+	<test thread-count="2" parallel="tests" name="Bill Payment Functionality Validation">
+		<classes>
+			<class name="com.qa.tests.BillPaymentSuite" />
+		</classes>
+	</test>
+
+	<test thread-count="2" parallel="tests" name="Update Contact Info Functionality Validation">
+		<classes>
+			<class name="com.qa.tests.UpdateContactInfoSuite" />
+		</classes>
+	</test>
+
+
+</suite> <!-- Suite -->

@@ -20,15 +20,16 @@ public final class ExtentReport {
 	}
 
 	private static ExtentReports extent;
-	
+	static String path;
 
 	public static void initReports() {
 		if (Objects.isNull(extent)) {
 			String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());// time stamp
 			String repName = "Test-Report-" + timeStamp + ".html";
-			String path = System.getProperty("user.dir") + "\\test-output\\" + repName;
-			ExtentSparkReporter sparkReporter = new ExtentSparkReporter("index.html").viewConfigurer().viewOrder()
-					.as(new ViewName[] { ViewName.DASHBOARD, ViewName.TEST, ViewName.CATEGORY }).apply();
+		    path = System.getProperty("user.dir") + "\\extent-test-output\\" + repName;
+			ExtentSparkReporter sparkReporter = new ExtentSparkReporter(path).viewConfigurer().viewOrder().as(new ViewName[] { ViewName.DASHBOARD, ViewName.TEST, ViewName.CATEGORY,ViewName.AUTHOR }).apply();
+			
+			
 		//	ExtentSparkReporter failSparkReporter = new ExtentSparkReporter("failed-test-index.html").filter().statusFilter().as(new Status[] { Status.FAIL }).apply();
 		//	failSparkReporter.config().setDocumentTitle("Failed Test Case");
 			sparkReporter.config().setTheme(Theme.DARK);
@@ -44,13 +45,13 @@ public final class ExtentReport {
 		if (Objects.nonNull(extent)) {
 			extent.flush();
 		}
-		Desktop.getDesktop().browse(new File("index.html").toURI());
+		Desktop.getDesktop().browse(new File(path).toURI());
 		//Desktop.getDesktop().browse(new File("failed-test-index.html").toURI());
 	}
 
-	public static void createTest(String testCaseName) {
+	public static void createTest(String testCaseName,String authorName,String featureName,String browser) {
 		
-		ExtentManager.setExtentTest(extent.createTest(testCaseName).assignAuthor("Sagar Kumbhar").assignCategory("Regression"));
-		
+	  ExtentManager.setExtentTest(extent.createTest(testCaseName).assignAuthor(authorName).assignCategory(featureName).assignDevice(browser));
+	//	ExtentManager.setExtentTest(extent.createTest(testCaseName, featureName));
 	}
 }

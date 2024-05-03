@@ -1,6 +1,7 @@
 package com.qa.reports;
 
 import java.awt.Desktop;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -9,6 +10,7 @@ import java.util.Date;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.net.PortProber;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ITestContext;
@@ -27,6 +29,7 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.aventstack.extentreports.reporter.configuration.ViewName;
 import com.qa.testComponents.BaseClass;
 
+
 public class ExtentListener extends BaseClass implements ITestListener, ISuiteListener {
 
 
@@ -44,7 +47,7 @@ public class ExtentListener extends BaseClass implements ITestListener, ISuiteLi
 	@Override
 	public void onTestStart(ITestResult result) {
 		// TODO Auto-generated method stub
-		ExtentReport.createTest(result.getMethod().getMethodName());
+	//	ExtentReport.createTest(result.getMethod().getMethodName());
 
 	}
 
@@ -93,17 +96,44 @@ public class ExtentListener extends BaseClass implements ITestListener, ISuiteLi
 	public void onStart(ISuite suite) {
 		// TODO Auto-generated method stub
 		ExtentReport.initReports();
+	 
+        try {
+            // Start Selenium Grid Hub programmatically
+			startSeleniumGridHub();
+			 // Start Selenium Grid Node programmatically
+			 startSeleniumGridNode();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+       
+       
+
 	}
 	@Override
 	public void onFinish(ISuite suite) {
 		// TODO Auto-generated method stub
 		try {
 			ExtentReport.flushReports();
+	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	
+
+    public static void startSeleniumGridHub() throws IOException, InterruptedException {
+        String[] command = {"cmd", "/c", "start/min", "cmd", "/k", "java -jar selenium-server-4.20.0.jar hub"};
+        Runtime.getRuntime().exec(command);
+        Thread.sleep(5000); // Wait for the hub to start
+    }
+
+    public static void startSeleniumGridNode() throws IOException, InterruptedException {
+        String[] command = {"cmd", "/c", "start/min", "cmd", "/k", "java -jar selenium-server-4.20.0.jar node --port " + PortProber.findFreePort()};
+        Runtime.getRuntime().exec(command);
+        Thread.sleep(5000); // Wait for the node to start
+    }
+
 }

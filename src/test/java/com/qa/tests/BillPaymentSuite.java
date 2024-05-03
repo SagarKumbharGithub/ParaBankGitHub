@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 import com.qa.pageObjects.BillPayPage;
 import com.qa.pageObjects.HomePage;
 import com.qa.pageObjects.LoginPage;
+import com.qa.reports.AllureListener;
+import com.qa.reports.ExtentReport;
 import com.qa.reusableComponents.ReadExcel;
 import com.qa.testComponents.BaseClass;
 import com.qa.testComponents.TestRetryAnalyzer;
@@ -21,6 +23,7 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 
 //@Listeners(com.qa.reports.ExtentListener.class)
+@Listeners({ AllureListener.class })
 
 @Epic("Account services")
 @Feature("Bill Payment")
@@ -37,8 +40,12 @@ public class BillPaymentSuite extends BaseClass{
 		String filePath=System.getProperty("user.dir")+"\\src\\test\\resources\\UseCaseData\\ParaBank_TestCases.xlsx";
 		Map<String, String> input=ReadExcel.getExcelData(filePath, "Bill Pay", "TC_BP_001");
 		
+		ExtentReport.createTest(input.get("TestCaseID")+"_"+input.get("TestCaseDescription"), input.get("TesterName"), input.get("FeatureName"),input.get("browser"));
+		
+		initialize_driver(input.get("browser"));
 		LoginPage loginPage= new LoginPage(getDriver());
-		loginPage.loginIntoApplication(input.get("username"), input.get("password"));
+		loginPage.loginIntoApplication(username,password);
+		Assert.assertTrue(loginPage.verifyUserLoginStatus());
 		HomePage homePage = new HomePage(getDriver());
 		homePage.clickOnBillPayTab();
 		BillPayPage billPayPage= new BillPayPage(getDriver());

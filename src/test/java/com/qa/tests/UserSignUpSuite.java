@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import com.qa.pageObjects.SignUpPage;
 import com.qa.reports.AllureListener;
+import com.qa.reports.ExtentReport;
 import com.qa.reusableComponents.ReadExcel;
 import com.qa.testComponents.BaseClass;
 
@@ -18,7 +19,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 
-//@Listeners({AllureListener.class})
+@Listeners({AllureListener.class})
 //@Listeners(com.qa.reports.ExtentListener.class)
 
 @Epic("User Registration")
@@ -35,6 +36,8 @@ public class UserSignUpSuite extends BaseClass{
 		String filePath=System.getProperty("user.dir")+"\\src\\test\\resources\\UseCaseData\\ParaBank_TestCases.xlsx";
 		Map<String, String> input=ReadExcel.getExcelData(filePath, "SignUp", "TC_RF_001");
 		
+		ExtentReport.createTest(input.get("TestCaseID")+"_"+input.get("TestCaseDescription"), input.get("TesterName"), input.get("FeatureName"),input.get("browser"));
+		initialize_driver(input.get("browser"));
 		SignUpPage signUp= new SignUpPage(getDriver());
 		signUp.clickOnRegisterLink();
 		signUp.enterFirstName(input.get("firstName"));

@@ -5,7 +5,6 @@
     <classes>
       <class name="com.qa.tests.LoginSuite">
         <methods>
-          <include name="initialize_driver"/>
           <include name="TC_LF_001_VerifyUserLoginIntoApplicationWithValidCredentials"/>
           <include name="tearDown"/>
         </methods>

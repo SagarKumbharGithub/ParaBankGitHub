@@ -2,9 +2,14 @@
 
 
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -16,7 +21,7 @@ import io.qameta.allure.Attachment;
 
 
 
-public class AllureListener implements ITestListener  {
+public class AllureListener implements ITestListener, ISuiteListener {
 
 	
 	 private static String getTestMethodName(ITestResult iTestResult) { return
@@ -97,7 +102,46 @@ public class AllureListener implements ITestListener  {
 	public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
 		System.out.println("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
 	}
+
+	@Override
+	public void onStart(ISuite suite) {
+		// TODO Auto-generated method stub
+		
+		try {
+			FileUtils.deleteDirectory(new File("target/allure-results"));
+			FileUtils.deleteDirectory(new File("allure-report"));
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onFinish(ISuite suite) {
+		// TODO Auto-generated method stub
+		
+	    executeShellCmd(System.getProperty("user.dir") +"\\AllureReport_History.bat");
+
+			File source = new File(System.getProperty("user.dir") +"\\allure-report");
+			File dest = new File(System.getProperty("user.dir") +"\\target\\allure-results");
+			try {
+			    FileUtils.copyDirectory(source, dest);
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+			executeShellCmd(System.getProperty("user.dir") +"\\AllureReport.bat");
+	}
 	
+	public static void executeShellCmd(String shellCmd) {
+	    try {
+	        Process process = Runtime.getRuntime().exec(shellCmd);
+	        process.waitFor();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        System.out.println("Error in Executing the command " + shellCmd);
+	    }
+	}
 
 	
 }

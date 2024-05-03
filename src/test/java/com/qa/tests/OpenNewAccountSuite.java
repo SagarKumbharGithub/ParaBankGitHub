@@ -10,6 +10,7 @@ import com.qa.pageObjects.HomePage;
 import com.qa.pageObjects.LoginPage;
 import com.qa.pageObjects.OpenNewAccount;
 import com.qa.reports.AllureListener;
+import com.qa.reports.ExtentReport;
 import com.qa.reusableComponents.ReadExcel;
 import com.qa.testComponents.BaseClass;
 
@@ -20,7 +21,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 
-//@Listeners({ AllureListener.class })
+@Listeners({ AllureListener.class })
 //@Listeners(com.qa.reports.ExtentListener.class)
 @Epic("Account services")
 @Feature("Account services_Open New Account")
@@ -37,8 +38,12 @@ public class OpenNewAccountSuite extends BaseClass {
 	public void TC_ONA_001_VerifyWhetherCheckingOptionPresentInAccountTypeDropdown() throws Exception {
 		Map<String, String> input = ReadExcel.getExcelData(filePath, "Open New Account", "TC_ONA_001");
 
+		ExtentReport.createTest(input.get("TestCaseID")+"_"+input.get("TestCaseDescription"), input.get("TesterName"), input.get("FeatureName"),input.get("browser"));
+		
+		initialize_driver(input.get("browser"));
 		LoginPage loginPage = new LoginPage(getDriver());
-		loginPage.loginIntoApplication(input.get("username"), input.get("password"));
+		loginPage.loginIntoApplication(username,password);
+		Assert.assertTrue(loginPage.verifyUserLoginStatus());
 		HomePage homePage = new HomePage(getDriver());
 		homePage.clickOnOpenNewAccountTab();
 		OpenNewAccount openNewAccount = new OpenNewAccount(getDriver());
@@ -54,9 +59,12 @@ public class OpenNewAccountSuite extends BaseClass {
 			"Regression" }, enabled = true, priority = 2, description = "TC_ONA_002:Verify that whether the What type of Account would you like to open? Field contains SAVING option ")
 	public void TC_ONA_002_VerifyWhetherSavingOptionPresentInAccountTypeDropdown() throws Exception {
 		Map<String, String> input = ReadExcel.getExcelData(filePath, "Open New Account", "TC_ONA_002");
-
+		ExtentReport.createTest(input.get("TestCaseID")+"_"+input.get("TestCaseDescription"), input.get("TesterName"), input.get("FeatureName"),input.get("browser"));
+		
+		initialize_driver(input.get("browser"));
 		LoginPage loginPage = new LoginPage(getDriver());
-		loginPage.loginIntoApplication(input.get("username"), input.get("password"));
+		loginPage.loginIntoApplication(username,password);
+		Assert.assertTrue(loginPage.verifyUserLoginStatus());
 		HomePage homePage = new HomePage(getDriver());
 		homePage.clickOnOpenNewAccountTab();
 		OpenNewAccount openNewAccount = new OpenNewAccount(getDriver());
@@ -72,8 +80,12 @@ public class OpenNewAccountSuite extends BaseClass {
 	public void TC_ONA_003_VerifyWhetherTheUserAbleToCreateNewAccountWithCheckingAccountType() throws Exception {
 		Map<String, String> input = ReadExcel.getExcelData(filePath, "Open New Account", "TC_ONA_003");
 
+		ExtentReport.createTest(input.get("TestCaseID")+"_"+input.get("TestCaseDescription"), input.get("TesterName"), input.get("FeatureName"),input.get("browser"));
+		
+		initialize_driver(input.get("browser"));
 		LoginPage loginPage = new LoginPage(getDriver());
-		loginPage.loginIntoApplication(input.get("username"), input.get("password"));
+		loginPage.loginIntoApplication(username,password);
+		Assert.assertTrue(loginPage.verifyUserLoginStatus());
 		HomePage homePage = new HomePage(getDriver());
 		homePage.clickOnOpenNewAccountTab();
 		OpenNewAccount openNewAccount = new OpenNewAccount(getDriver());
@@ -91,8 +103,12 @@ public class OpenNewAccountSuite extends BaseClass {
 	public void TC_ONA_004_VerifyWhetherTheUserAbleToCreateNewAccountWithSavingAccountType() throws Exception {
 		Map<String, String> input = ReadExcel.getExcelData(filePath, "Open New Account", "TC_ONA_004");
 
+		ExtentReport.createTest(input.get("TestCaseID")+"_"+input.get("TestCaseDescription"), input.get("TesterName"), input.get("FeatureName"),input.get("browser"));
+		
+		initialize_driver(input.get("browser"));
 		LoginPage loginPage = new LoginPage(getDriver());
-		loginPage.loginIntoApplication(input.get("username"), input.get("password"));
+		loginPage.loginIntoApplication(username,password);
+		Assert.assertTrue(loginPage.verifyUserLoginStatus());
 		HomePage homePage = new HomePage(getDriver());
 		homePage.clickOnOpenNewAccountTab();
 		OpenNewAccount openNewAccount = new OpenNewAccount(getDriver());

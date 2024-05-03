@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [Para Bank Web Application ]" guice-stage="DEVELOPMENT">
-  <listeners>
-    <listener class-name="com.qa.reports.ExtentListener"/>
-  </listeners>
-  <test thread-count="5" parallel="tests" name="Register Functionality Validation(failed)">
-    <groups>
-      <run>
-        <include name="Regression"/>
-      </run>
-    </groups>
+<suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.qa.tests.UserSignUpSuite">
+      <class name="com.qa.tests.LoginSuite">
         <methods>
-          <include name="initialize_driver"/>
+          <include name="TC_LF_001_VerifyUserLoginIntoApplicationWithValidCredentials"/>
           <include name="tearDown"/>
-          <include name="TC_RF_001_VerifyWhetherTheUserABleToRegisterInParaBankApplicationWithValidTestData"/>
         </methods>
-      </class> <!-- com.qa.tests.UserSignUpSuite -->
+      </class> <!-- com.qa.tests.LoginSuite -->
     </classes>
-  </test> <!-- Register Functionality Validation(failed) -->
-</suite> <!-- Failed suite [Para Bank Web Application ] -->
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->

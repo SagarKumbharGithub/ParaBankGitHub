@@ -30,6 +30,9 @@ public class LoginPage {
 	@FindBy(css = ".smallText")
 	WebElement headerUserName;
 
+	@FindBy(css = ".error")
+	WebElement errorMsg;
+
 	@FindBy(linkText = "Log Out")
 	WebElement logOut;
 
@@ -65,55 +68,81 @@ public class LoginPage {
 	public void clickOnLoginButoon() {
 		CommonMethods.waitForElement(driver, "Login Button", loginButton);
 		CommonMethods.click_custom(loginButton, "Login Button");
-		verifyUserLogin();
-	
+
 	}
 
-
-    @Step("Verify user login status")
-	public void verifyUserLogin() {
+	@Step("Verify user login status")
+	public boolean verifyUserLoginStatus() {
+		boolean loginStatus = false;
 		
-		try {
-			CommonMethods.waitForElement(driver, "Log Out Button", logOut);
-			if (logOut.isDisplayed()) {
-			
+			if (CommonMethods.isElementPresent_custom(logOut) == true) {
+
+				loginStatus = true;
 				ExtentLogger.pass("User sucessfully logged into Para Bank Application");
 				AllureListener.saveTextLog("User sucessfully logged into Para Bank Application");
-			} else {
+			} 
+			else if(CommonMethods.isElementPresent_custom(errorMsg) == true)
+			{
+				loginStatus = false;
+				ExtentLogger.fail("Login Error Message: " + errorMsg.getText());
+				AllureListener.saveTextLog("Login Error Message: " + errorMsg.getText());
+				ExtentLogger.fail("User is not able to login into Para Bank application");
+				
+			}
+			else {
+				loginStatus = false;
 				ExtentLogger.fail("User is not able to login into Para Bank application");
 				AllureListener.saveTextLog("User is not able to login into Para Bank application");
 				Assert.fail("User is not able to login into Para Bank application");
+			}
+	
 
+		return loginStatus;
+
+	}
+
+	@Step("Verify user login status with Invalid Username and Password")
+	public boolean verifyUserLoginStatusWithInvalidCredentials() {
+		boolean loginStatus = false;
+
+			if (CommonMethods.isElementPresent_custom(errorMsg) == true) {
+				loginStatus = true;
+				ExtentLogger.pass("Login Error Message: " + errorMsg.getText());
+				AllureListener.saveTextLog("Login Error Message: " + errorMsg.getText());
+				ExtentLogger.pass("User is not able to login into Para Bank application");
+				AllureListener.saveTextLog("User is not able to login into Para Bank application");
+			}
+			else {
+				loginStatus = false;
+				ExtentLogger.fail("User sucessfully logged into Para Bank Application");
+				Assert.fail("User sucessfully logged into Para Bank Application");
 			}
 
-		} catch (Exception e) {
-			// TODO: handle exception
-			ExtentLogger.fail("User is not able to login into Para Bank application");
-			AllureListener.saveTextLog("User is not able to login into Para Bank application");
-			Assert.fail("User is not able to login into Para Bank application");
-		}
-		
-	}
 	
-	
-	/*
-	@Step("Get Welcome text with Username")
-	public String getHeaderUserNameWithWelcomeText() {
-		try {
-			headerUserName.getText();
-			ExtentLogger.pass("Username captured from Homepage : " + headerUserName.getText());
-			AllureListener.saveTextLog("Username captured from Homepage : " + headerUserName.getText());
 
-		} catch (Exception e) {
-			// TODO: handle exception
-			ExtentLogger.fail("User not able to login into application :Not able to get Username from homepage");
-			AllureListener
-					.saveTextLog("User not able to login into application :Not able to get Username from homepage");
-			Assert.fail("User not able to login into application :Not able to get Username from homepage");
-		}
-		return headerUserName.getText();
+		return loginStatus;
+
 	}
-*/
-	
-	
+	/*
+	 * @Step("Get Welcome text with Username") public String
+	 * getHeaderUserNameWithWelcomeText() { try { headerUserName.getText();
+	 * ExtentLogger.pass("Username captured from Homepage : " +
+	 * headerUserName.getText());
+	 * AllureListener.saveTextLog("Username captured from Homepage : " +
+	 * headerUserName.getText());
+	 * 
+	 * } catch (Exception e) { // TODO: handle exception ExtentLogger.
+	 * fail("User not able to login into application :Not able to get Username from homepage"
+	 * ); AllureListener
+	 * .saveTextLog("User not able to login into application :Not able to get Username from homepage"
+	 * ); Assert.
+	 * fail("User not able to login into application :Not able to get Username from homepage"
+	 * ); } return headerUserName.getText(); }
+	 */
+	/*
+	 * 
+	 * 
+	 * }
+	 */
+
 }

@@ -1,33 +1,31 @@
 package com.qa.testComponents;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 
-import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-
-import com.qa.reports.ExtentReport;
 
 import io.qameta.allure.Step;
 
 public class BaseClass {
 
+	public String username="mike";
+	public String password="mike@1234";
+	
 	WebDriver driver;
 	public static ThreadLocal<WebDriver> tdriver = new ThreadLocal<WebDriver>();
+	
 
-	@BeforeMethod(alwaysRun = true)
-	public ThreadLocal<WebDriver> initialize_driver() throws Exception {
+	//@BeforeMethod(alwaysRun = true)
+	public ThreadLocal<WebDriver> initialize_driver(String browser) throws Exception {
 
 		String browserName = System.getProperty("browser") != null ? System.getProperty("browser")
 				: PropertiesOperations.getPropertyValueByKey("browser");
@@ -47,6 +45,12 @@ public class BaseClass {
 			setUpMircrosoftEdge();
 
 		}
+
+		else if (browserName.equalsIgnoreCase("remote")) {
+
+			setUpRemoteDriver(browser);
+
+		}
 		tdriver = openurl(url);
 		return tdriver;
 
@@ -60,7 +64,8 @@ public class BaseClass {
 		// String host=PropertiesOperations.getPropertyValueByKey("hosturl");
 		// driver = new RemoteWebDriver(new URL(host), capabilities);
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+		driver.manage().deleteAllCookies();
 		driver.get(url);
 		tdriver.set(driver);
 		tdriver.get();
@@ -86,9 +91,31 @@ public class BaseClass {
 		driver = new FirefoxDriver();
 	}
 
-	@Step("IE Browser Opened ")
+	@Step("Microsoft Edge Browser Opened ")
 	public void setUpMircrosoftEdge() {
 		driver = new EdgeDriver();
+	}
+	
+	public void setUpRemoteDriver(String browserName)  {
+		try {
+			
+			DesiredCapabilities cap = new DesiredCapabilities();
+			cap.setBrowserName(browserName); // MicrosoftEdge
+			driver = new RemoteWebDriver(new URL("http://localhost:4444/"), cap);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	
+	
+	
+	/*
+	@Step("Remote Driver Opned ")
+	public void setUpRemoteDriver() throws MalformedURLException {
+		DesiredCapabilities cap= new DesiredCapabilities();
+		cap.setBrowserName("chrome");		//MicrosoftEdge
+		driver=new RemoteWebDriver(new  URL("http://localhost:4444/"),cap);
+	}
+	*/
 	}
 
 }
